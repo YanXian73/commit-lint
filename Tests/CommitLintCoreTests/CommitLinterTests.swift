@@ -9,7 +9,7 @@ import Testing
 
 @Test func subjectLongerThan50CharsFails() {
     let linter = CommitLinter()
-    let longSubject = String(repeating: "a", count: 51)
+    let longSubject = String(repeating: "a", count: 50)
     let result = linter.lint(longSubject)
 
     guard case .failed(let reason) = result else {
