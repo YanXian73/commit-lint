@@ -2,13 +2,19 @@ public struct CommitLinter {
     public init() {}
 
     public func lint(_ message: String) -> LintResult {
-        if message.count > 50 {
-            return .failed(reason: "Commit message is too long (\(message.count) characters)")
+        // commit 訊息的結構是「標題行 + 空行 + 內文」，規則只看標題（第一行）
+        let subject = message
+            .split(separator: "\n", omittingEmptySubsequences: false)
+            .first
+            .map(String.init) ?? ""
+
+        if subject.count > 50 {
+            return .failed(reason: "Subject is too long (\(subject.count) characters, max 50)")
         }
-        if message.hasSuffix(".") {
+        if subject.hasSuffix(".") {
             return .failed(reason: "Subject ends with a period")
         }
-        return  .ok
+        return .ok
     }
 }
 

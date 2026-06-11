@@ -19,6 +19,14 @@ import Testing
     #expect(reason.contains("too long"))
 }
 
+@Test func longBodyDoesNotCountTowardSubjectLength() {
+    let linter = CommitLinter()
+    // 標題很短，但內文很長 —— 只看標題的話應該要過
+    let message = "feat: add login\n\n" + String(repeating: "a", count: 200)
+    let result = linter.lint(message)
+    #expect(result == .ok)
+}
+
 @Test func subjectEndingWithPeriodFails() {
     let linter = CommitLinter()
     let result = linter.lint("hello.")
